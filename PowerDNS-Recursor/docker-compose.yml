@@ -1,0 +1,21 @@
+services:
+  pdns-recursor:
+    image: powerdns/pdns-recursor-51:5.1.3
+    container_name: pdns-recursor
+    volumes:
+      - ./recursor.conf:/etc/powerdns/recursor.conf
+      - ./root-anchors:/etc/powerdns/root-anchors
+      - ./named.root:/etc/powerdns/named.root
+    ports:
+      - "127.0.0.1:53:53/tcp"
+      - "127.0.0.1:53:53/udp"
+    sysctls:
+      - net.ipv4.tcp_fastopen=3
+    networks:
+      dns_network:
+        ipv4_address: 172.16.0.2
+
+networks:
+  dns_network:
+    external: true
+
